@@ -7,8 +7,9 @@ const forecastSection = $("#forecast");
 
 const key = "e51bc503507ef30d73704daf0f5ae713";
 // - Get the user input value
-const cityName = searchInput.val().trim();
+const cityName = $("#search-input").val().trim();
 // //    - Build the API query URL based on the user input value
+//TODO //replace london  with search input value
 const queryURL =
   "https://api.openweathermap.org/data/2.5/forecast?q=" +
   "London" +
@@ -16,7 +17,7 @@ const queryURL =
   key +
   "&units=metric";
 // //    - Add event listener to form submit
-// searchBtn.on("click", function () {
+// TODO searchBtn.on("click", function () {
 //if input is empty show error
 //else -
 fetch(queryURL)
@@ -112,8 +113,24 @@ fetch(queryURL)
 // });
 
 // 2. When user search for a city, store it in local storage
-// 3. On initial page load load the search history and show it as a list in the HTML
-//    - ....
+searchBtn.on("click", function () {
+  localStorage.setItem("history", JSON.stringify(cityName));
+});
+// 3. On initial page load load the search history and show it as a list in the
+function init() {
+  const searchHistory = JSON.parse(localStorage.getItem("history")) || [];
+  if (searchHistory.length > 0) {
+    for (let i = 0; i < searchHistory.length; i++) {
+      const historyList = $("<ul>");
+      const listItem = $("<li>");
+      listItem.addClass("search-history-item");
+      listItem.text(searchHistory[i]);
+      historyList.append(listItem);
+      searchHistorySection.append(historyList);
+    }
+  }
+}
+
 //    - Build the API query URL based on the history stored in local storage
 //    - Call the API and render the result in the HTML
 // 4. When user click on the search history, call weather API and show the result in the HTML
