@@ -46,7 +46,7 @@ fetch(queryURL)
     cityIconDiv.append(displayIcon);
 
     //get today's date
-    const todayDate = data.list[0].dt_txt;
+    const todayDate = new Date(data.list[0].dt_txt).toLocaleDateString();
     const dateText = $("<p>");
     dateText.text(`Date & Time : ${todayDate}`);
 
@@ -73,17 +73,41 @@ fetch(queryURL)
     humText.text(`Humidity: ${todayHum}`);
     todayDataDiv.append(humText);
 
-    //Loop through all weathers array and get the following values
+    //Loop through all weathers array and render values
+    for (let i = 0; i < data.list.length; i++) {
+      //selecting only one time for each day
+      if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
+        const dayCard = $("<div>");
+        //DATE
+        const date = new Date(data.list[i].dt_txt).toLocaleDateString();
+        const dayTitle = $("<h4>");
+        dayTitle.text(date);
 
-    //DATE
+        //ICON
+        const iconCd = data.list[i].weather[0].icon;
+        const iconSRC = "http://openweathermap.org/img/w/" + iconCd + ".png";
+        const dayIcon = $("<img>");
+        dayIcon.attr("src", iconSRC);
 
-    //ICON
+        //TEMPERATURE
+        const temp = Math.round(data.list[i].main.temp);
+        const dayTemp = $("<p>");
+        dayTemp.text(`Temp: ${temp}C`);
 
-    //TEMPERATURE
+        //WIND SPEED
+        const wind = data.list[i].wind.speed;
+        const dayWind = $("<p>");
+        dayWind.text(`Wind: ${wind}`);
 
-    //WIND SPEED
+        //HUMIDITY
+        const humidity = data.list[i].main.humidity;
+        const dayHum = $("<p>");
+        dayHum.text(`Humidity: ${humidity}`);
 
-    //HUMIDITY
+        dayCard.append(dayTitle, dayIcon, dayTemp, dayWind, dayHum);
+        forecastSection.append(dayCard);
+      }
+    }
   });
 // });
 
