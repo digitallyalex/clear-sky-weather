@@ -1,13 +1,35 @@
-// 1. When user searches for a city in the input, call weather API and show the result in the HTML
 const searchInput = $("#search-input");
 const searchBtn = $("#search-button");
 const searchHistorySection = $("#history");
 const todaySection = $("#today");
 const forecastSection = $("#forecast");
+const currentCity = $("#current-city");
 
+// On initial page load load the search history and show it as a list in the
+function init() {
+  const searchHistory = JSON.parse(localStorage.getItem("history")) || [];
+  if (searchHistory.length > 0) {
+    for (let i = 0; i < searchHistory.length; i++) {
+      const historyList = $("<ul>");
+      historyList.addClass("list-group");
+      const listItem = $("<li>");
+      listItem.addClass("list-group-item");
+      listItem.text(searchHistory[i]);
+      historyList.append(listItem);
+      searchHistorySection.append(historyList);
+    }
+  }
+}
+
+//When user searches for a city in the input, call weather API and show the result in the HTML
 const key = "e51bc503507ef30d73704daf0f5ae713";
+
+// //    - Add event listener to form submit
+// searchBtn.on("submit", function (event) {
+//   event.preventDefault();
 // - Get the user input value
-const cityName = $("#search-input").val().trim();
+const cityName = searchInput.val().trim();
+
 // //    - Build the API query URL based on the user input value
 //TODO //replace london  with search input value
 const queryURL =
@@ -16,8 +38,7 @@ const queryURL =
   "&appid=" +
   key +
   "&units=metric";
-// //    - Add event listener to form submit
-// TODO searchBtn.on("click", function () {
+
 //if input is empty show error
 //else -
 fetch(queryURL)
@@ -31,14 +52,12 @@ fetch(queryURL)
     //Get the first weather forecast item and get the following values
     // - Get the city name
     const cityDisplayed = data.city.name;
-    const currentCity = $("<h2>");
     currentCity.text(cityDisplayed);
-    todaySection.append(currentCity);
 
     //get today's date
     const todayDate = new Date(data.list[0].dt_txt).toLocaleDateString();
     const dateText = $("<h4>");
-    dateText.text(todayDate);
+    dateText.text(`Today is ${todayDate}`);
     dateText.addClass("dates");
     todaySection.append(dateText);
 
@@ -110,24 +129,10 @@ fetch(queryURL)
 // });
 
 // 2. When user search for a city, store it in local storage
-searchBtn.on("click", function () {
+searchBtn.on("submit", function (event) {
+  event.preventDefault();
   localStorage.setItem("history", JSON.stringify(cityName));
 });
-// 3. On initial page load load the search history and show it as a list in the
-function init() {
-  const searchHistory = JSON.parse(localStorage.getItem("history")) || [];
-  if (searchHistory.length > 0) {
-    for (let i = 0; i < searchHistory.length; i++) {
-      const historyList = $("<ul>");
-      historyList.addClass("list-group");
-      const listItem = $("<li>");
-      listItem.addClass("list-group-item");
-      listItem.text(searchHistory[i]);
-      historyList.append(listItem);
-      searchHistorySection.append(historyList);
-    }
-  }
-}
 
 //    - Build the API query URL based on the history stored in local storage
 //    - Call the API and render the result in the HTML

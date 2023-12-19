@@ -22,6 +22,10 @@ h6 {
   width: 4rem;
 }
 
+.underline {
+  text-decoration: underline;
+}
+
 /* Search box - left side */
 .search-box {
   margin: 10px;
@@ -32,9 +36,10 @@ h6 {
   );
 }
 
-.search-prompt {
+form {
   margin-top: 10px;
 }
+
 .search-button {
   margin-top: 10px;
   background: radial-gradient(
