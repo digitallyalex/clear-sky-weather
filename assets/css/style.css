@@ -1,0 +1,66 @@
+/* Global styles */
+body {
+  background: radial-gradient(
+    circle at 10% 20%,
+    rgb(10, 174, 227) 0%,
+    rgb(124, 182, 255) 100.2%
+  );
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
+  color: rgb(9, 27, 39);
+}
+
+.icon-image {
+  width: 4rem;
+}
+
+/* Search box - left side */
+.search-box {
+  margin: 10px;
+  background: linear-gradient(
+    to top,
+    #dfe9f3 0%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+}
+
+.search-prompt {
+  margin-top: 10px;
+}
+.search-button {
+  margin-top: 10px;
+  background: radial-gradient(
+    circle at 10% 20%,
+    rgb(10, 174, 227) 0%,
+    rgb(124, 182, 255) 100.2%
+  );
+}
+
+/* Right side divs */
+/* Main current day info */
+.today-section {
+  margin: 10px;
+  background: linear-gradient(
+    to top,
+    #dfe9f3 0%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+}
+
+/* 5 day forecast section */
+.forecast-card {
+  margin: 4px;
+  background: linear-gradient(
+    to top,
+    rgb(136, 205, 248) 0%,
+    rgba(255, 255, 255, 0.4) 100%
+  );
+}

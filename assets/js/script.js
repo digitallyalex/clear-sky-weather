@@ -27,67 +27,64 @@ fetch(queryURL)
   //    - Call the API and render the result in the HTML
   .then(function (data) {
     console.log(data);
-    // - Get the city name and show it in the main weather forecast card
+
+    //Get the first weather forecast item and get the following values
+    // - Get the city name
     const cityDisplayed = data.city.name;
-    const currentCity = $("<h3>");
+    const currentCity = $("<h2>");
     currentCity.text(cityDisplayed);
+    todaySection.append(currentCity);
 
-    //creating div to place city text and icon separately from today's data
-    const cityIconDiv = $("<div>");
-    cityIconDiv.append(currentCity);
-    todaySection.append(cityIconDiv);
-
-    // - Get the first weather forecast item and get the following values
+    //get today's date
+    const todayDate = new Date(data.list[0].dt_txt).toLocaleDateString();
+    const dateText = $("<h4>");
+    dateText.text(todayDate);
+    dateText.addClass("dates");
+    todaySection.append(dateText);
 
     //get today's icon
     const iconCode = data.list[0].weather[0].icon;
     const iconURL = "http://openweathermap.org/img/w/" + iconCode + ".png";
     const displayIcon = $("<img>");
     displayIcon.attr("src", iconURL);
-    cityIconDiv.append(displayIcon);
-
-    //get today's date
-    const todayDate = new Date(data.list[0].dt_txt).toLocaleDateString();
-    const dateText = $("<p>");
-    dateText.text(`Date & Time : ${todayDate}`);
-
-    //creating today data div to separate from cityIcon div
-    const todayDataDiv = $("<div>");
-    todayDataDiv.append(dateText);
-    todaySection.append(todayDataDiv);
+    displayIcon.addClass("icon-image");
+    todaySection.append(displayIcon);
 
     //get today's temperature
     const todayTemp = Math.round(data.list[0].main.temp);
     const tempText = $("<p>");
     tempText.text(`Temperature: ${todayTemp}C`);
-    todayDataDiv.append(tempText);
+    todaySection.append(tempText);
 
     //get today's wind speed
     const todayWind = data.list[0].wind.speed;
     const windText = $("<p>");
     windText.text(`Wind Speed: ${todayWind}`);
-    todayDataDiv.append(windText);
+    todaySection.append(windText);
 
     //get today's humidity
     const todayHum = data.list[0].main.humidity;
     const humText = $("<p>");
     humText.text(`Humidity: ${todayHum}`);
-    todayDataDiv.append(humText);
+    todaySection.append(humText);
 
     //Loop through all weathers array and render values
     for (let i = 0; i < data.list.length; i++) {
       //selecting only one time for each day
       if (data.list[i].dt_txt.indexOf("15:00:00") !== -1) {
         const dayCard = $("<div>");
+        dayCard.addClass("card col-md-2 col-sm-12 forecast-card");
         //DATE
         const date = new Date(data.list[i].dt_txt).toLocaleDateString();
-        const dayTitle = $("<h4>");
+        const dayTitle = $("<h5>");
+        dayTitle.addClass("dates");
         dayTitle.text(date);
 
         //ICON
         const iconCd = data.list[i].weather[0].icon;
         const iconSRC = "http://openweathermap.org/img/w/" + iconCd + ".png";
         const dayIcon = $("<img>");
+        dayIcon.addClass("icon-image");
         dayIcon.attr("src", iconSRC);
 
         //TEMPERATURE
@@ -122,8 +119,9 @@ function init() {
   if (searchHistory.length > 0) {
     for (let i = 0; i < searchHistory.length; i++) {
       const historyList = $("<ul>");
+      historyList.addClass("list-group");
       const listItem = $("<li>");
-      listItem.addClass("search-history-item");
+      listItem.addClass("list-group-item");
       listItem.text(searchHistory[i]);
       historyList.append(listItem);
       searchHistorySection.append(historyList);
